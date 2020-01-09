@@ -16,7 +16,7 @@
 Summary: Compatibility GNU Compiler Collection
 Name: compat-gcc-34
 Version: 3.4.6
-Release: 30%{?dist}
+Release: 32%{?dist}
 # libgcc and crtstuff have an exception which allows
 # linking it into any kind of programs or shared libraries without
 # restrictions.
@@ -250,11 +250,11 @@ OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-mcpu=ultrasparc/-mtune=ultrasparc/g'`
 OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-march=z9-109//g;s/-march=z10//g;s/-march=z196//g;s/-mtune=z10//g;s/-mtune=zEC12//g'`
 %endif
 %ifarch ppc ppc64
-OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-march=power[67]//g;s/-mtune=power[678]//g'`
+OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-march=power[678]//g;s/-mcpu=power[678]//g;s/-mtune=power[678]//g'`
 %endif
 OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-Wall//g' -e 's/-Wp,-D_FORTIFY_SOURCE=2//g'`
 OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-fexceptions//g' -e 's/-fasynchronous-unwind-tables//g'`
-OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-grecord-gcc-switches//g'`
+OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-grecord-gcc-switches//g' -e 's/-fstack-protector-strong//g'`
 OPT_FLAGS=`echo $OPT_FLAGS|sed -e 's/-fstack-protector//g' -e 's/--param=ssp-buffer-size=[0-9]*//g'`
 %ifarch sparc64
 cat > gcc64 <<"EOF"
@@ -348,6 +348,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc gcc/f/ChangeLog* gcc/COPYING*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 3.4.6-32
+- Mass rebuild 2014-01-24
+
+* Tue Jan  7 2014 Jakub Jelinek  <jakub@redhat.com> 3.4.6-31
+- filter out -fstack-protector-strong (#1048851)
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 3.4.6-31
+- Mass rebuild 2013-12-27
+
 * Fri Jul 19 2013 Jakub Jelinek  <jakub@redhat.com> 3.4.6-30
 - only include compat-libf2c-34 subpackages and nothing else
 
